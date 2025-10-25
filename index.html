@@ -1,0 +1,269 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BITCOINAYT: SPIN TO WIN FREE AIRDROP</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+  }
+  #gameContainer {
+    max-width: 600px;
+    margin: auto;
+    text-align: center;
+  }
+  #wheel {
+    margin: 20px auto;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    border: 10px solid #333;
+    position: relative;
+    overflow: hidden;
+  }
+  #spinBtn {
+    padding: 10px 20px;
+    font-size: 16px;
+  }
+  #message {
+    margin-top: 20px;
+    min-height: 50px;
+  }
+  #walletInfo {
+    margin-top: 10px;
+  }
+</style>
+</head>
+<body>
+
+<div id="gameContainer">
+  <h1>BITCOINAYT SPIN TO WIN FREE AIRDROP</h1>
+
+  <div>
+    <button id="initializeBtn">Initialize Wallet</button>
+  </div>
+  <div id="walletInfo">Wallet not initialized.</div>
+  <div>
+    <button id="checkBalanceBtn" disabled>Check Balance</button>
+    <button id="sendBtn" disabled>Send 1 Coin</button>
+  </div>
+
+  <div id="balanceDisplay"></div>
+
+  <hr />
+
+  <div id="wheel"></div>
+  <button id="spinBtn" disabled>Spin</button>
+
+  <div id="message"></div>
+</div>
+
+<script>
+  // State variables
+  let walletType = null; // 'Bitcoinayt' or 'Sata'
+  let walletBalance = 0;
+  let initialized = false;
+  let isSpinning = false;
+
+  const initializeBtn = document.getElementById('initializeBtn');
+  const checkBalanceBtn = document.getElementById('checkBalanceBtn');
+  const sendBtn = document.getElementById('sendBtn');
+  const spinBtn = document.getElementById('spinBtn');
+  const messageDiv = document.getElementById('message');
+  const walletInfoDiv = document.getElementById('walletInfo');
+  const balanceDisplay = document.getElementById('balanceDisplay');
+
+  // Helper functions
+  function updateWalletInfo() {
+    if (!initialized) {
+      walletInfoDiv.innerHTML = 'Wallet not initialized.';
+    } else {
+      walletInfoDiv.innerHTML = `Wallet Type: ${walletType} | Balance: ${walletBalance} coins`;
+    }
+  }
+
+  function initializeWallet() {
+    // For simplicity, randomly assign wallet type
+    // In real scenario, user knows their wallet
+    const rand = Math.random();
+    if (rand < 0.5) {
+      walletType = 'Sata';
+    } else {
+      walletType = 'Bitcoinayt';
+    }
+    walletBalance = 0; // Start with 0 balance
+    initialized = true;
+    updateWalletInfo();
+    messageDiv.innerHTML = 'Wallet initialized. Please check your balance.';
+    checkBalanceBtn.disabled = false;
+    sendBtn.disabled = false;
+    spinBtn.disabled = true;
+  }
+
+  function checkBalance() {
+    // For simulation, if balance < 1, randomly assign a balance
+    if (walletBalance === 0) {
+      walletBalance = Math.floor(Math.random() * 5) + 1; // 1 to 5 coins
+    }
+    balanceDisplay.innerHTML = `Current Balance: ${walletBalance} coins`;
+    messageDiv.innerHTML = 'Balance checked.';
+    if (walletBalance >= 1) {
+      spinBtn.disabled = false;
+    } else {
+      spinBtn.disabled = true;
+    }
+  }
+
+  function sendCoins() {
+    if (walletBalance >= 1) {
+      walletBalance -= 1;
+      balanceDisplay.innerHTML = `Current Balance: ${walletBalance} coins`;
+      messageDiv.innerHTML = 'Sent 1 coin to BitcoinaytReserves.';
+      // Simulate confirmation
+      setTimeout(() => {
+        messageDiv.innerHTML += '<br>Transaction confirmed.';
+        if (walletBalance >= 1) {
+          spinBtn.disabled = false;
+        } else {
+          spinBtn.disabled = true;
+   
+1000
+     }
+      }, 1000);
+    } else {
+      messageDiv.innerHTML = 'Insufficient balance.';
+    }
+  }
+
+  // Initialize event handlers
+  initializeBtn.onclick = () => {
+    initializeWallet();
+  };
+
+  checkBalanceBtn.onclick = () => {
+    checkBalance();
+  };
+
+  sendBtn.onclick = () => {
+    sendCoins();
+  };
+
+  // Create wheel with 8 parts
+  const wheel = document.getElementById('wheel');
+
+  const sectors = [
+    'Lose', // 0
+    '36 Years', // 1
+    'Lose', // 2
+    '36 Years', // 3
+    'Lose', // 4
+    'Lose', // 5
+    'Lose', // 6
+    'Lose'  // 7
+  ];
+
+  // Assign '36 Years' to 2 random parts
+  function createWheel() {
+    // Clear previous
+    wheel.innerHTML = '';
+
+    const partsCount = sectors.length;
+    const centerX = 150;
+    const centerY = 150;
+    const radius = 140;
+
+    // Generate sectors
+    sectors.forEach((label, index) => {
+      const startAngle = (index * 360) / partsCount;
+      const endAngle = startAngle + (360 / partsCount);
+
+      // Create sector element
+      const sector = document.createElement('div');
+      sector.style.position = 'absolute';
+      sector.style.width = '50%';
+      sector.style.height = '100%';
+      sector.style.top = '0';
+      sector.style.left = '50%';
+      sector.style.transformOrigin = '0% 50%';
+      sector.style.transform = `rotate(${startAngle}deg) skewY(-${90 - (360/partsCount)}deg)`;
+      sector.style.backgroundColor = label === '36 Years' ? '#4CAF50' : '#188ade';
+      sector.style.border = '1px solid #fff';
+      sector.innerHTML = `<div style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%) rotate(${(360/partsCount)/2}deg); font-weight:bold;">${label}</div>`;
+      wheel.appendChild(sector);
+    });
+  }
+
+  createWheel();
+
+  // Spin logic
+  document.getElementById('spinBtn').onclick = () => {
+    if (isSpinning || !initialized || walletBalance < 1) return;
+    isSpinning = true;
+    messageDiv.innerHTML = 'Spinning...';
+
+    // Deduct 1 coin for spinning
+    walletBalance -= 1;
+    balanceDisplay.innerHTML = `Current Balance: ${walletBalance} coins`;
+
+    // Spin animation
+    const randomIndex = Math.floor(Math.random() * sectors.length);
+    const rotations = 4; // Number of full rotations
+    const sectorSizeDeg = 360 / sectors.length;
+    const targetDeg = 360 * rotations + (sectors.length - randomIndex) * sectorSizeDeg - sectorSizeDeg/2;
+
+    let currentDeg = 0;
+    const duration = 4000; // 4 seconds
+    const startTime = performance.now();
+
+    function animate(currentTime) {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const easeProgress = 1 - Math.pow(1 - progress, 3); // ease out
+      currentDeg = easeProgress * targetDeg;
+      wheel.style.transform = `rotate(${currentDeg}deg)`;
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        // Show result
+        const resultLabel = sectors[randomIndex];
+        if (resultLabel === '36 Years') {
+          messageDiv.innerHTML = 'Congratulations! You won 36 years added to your life!';
+        } else {
+          messageDiv.innerHTML = 'Sorry, try again!';
+        }
+        isSpinning = false;
+        // Check if can spin again
+        if (walletBalance >= 1) {
+          document.getElementById('spinBtn').disabled = false;
+        } else {
+          document.getElementById('spinBtn').disabled = true;
+        }
+      }
+    }
+
+    requestAnimationFrame(animate);
+  };
+</script>
+HOW TO PLAY: 1. Click Initialize Wallet
+2. Click Check Balance
+3. Click Send 1 Coin
+4. Click Spin
+5. Listen For Instructions (for humans only)(without attachments without externals no newyork weather okay)
+const winning = (Math.floor((randomDegree % 360) / (360 / segments)) === 2 || 
+                        Math.floor((randomDegree % 360) / (360 / segments)) === 5);
+
+        setTimeout(() => {
+            if (winning) {
+                messageDiv.innerText = "I want what I need from New Earth Reserves!";
+            } else {
+                messageDiv.innerText = "Better luck next time!";
+            }
+        }, 4000);
+    }
+
+    playButton.addEventListener('click', spinWheel);
+</body>
+</html>
